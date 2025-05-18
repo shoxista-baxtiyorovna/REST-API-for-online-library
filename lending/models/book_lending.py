@@ -1,4 +1,5 @@
 from django.db import models
+from django.utils import timezone
 from catalog.models import BookCopy
 from users.models import CustomUser
 
@@ -15,6 +16,14 @@ class BookLending(models.Model):
     due_date = models.DateTimeField()
     returned_date = models.DateTimeField(blank=True, null=True)
     status = models.CharField(max_length=100, choices=LENDING_STATUS)
+
+    @property
+    def current_fine(self):
+        if self.status == 'overdue' and not self.returned_date:
+            days_late = (timezone.now().date() - self.due_date).days
+            return max(0, days_late * 1000)
+        return 0
+
 
     def __str__(self):
         return f'{self.book_copy} {self.borrower}'

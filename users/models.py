@@ -28,3 +28,4 @@ class UserProfile(BaseModel):
     user = models.OneToOneField(CustomUser, on_delete=models.CASCADE, related_name='profiles')
     bio = models.TextField(max_length=200)
     image = models.ImageField(blank=True, null=True)
+

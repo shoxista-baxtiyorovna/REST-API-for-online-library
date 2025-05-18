@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Author, Genre, Book, BookCopy
+from .models import Author, Genre, Book, BookCopy, BookRating
 
 
 @admin.register(Author)
@@ -29,11 +29,18 @@ class BookAdmin(admin.ModelAdmin):
     get_authors.short_description = 'Authors'
 
 
-# BookCopy modelini admin paneliga ro'yxatdan o'tkazish
 @admin.register(BookCopy)
 class BookCopyAdmin(admin.ModelAdmin):
     list_display = ('book', 'inventory_number', 'condition', 'is_available', 'added_date')
     search_fields = ('book__title', 'inventory_number', 'condition')
     list_filter = ('condition', 'is_available', 'book__genre')
     ordering = ('added_date',)
+
+
+@admin.register(BookRating)
+class BookRatingAdmin(admin.ModelAdmin):
+    list_display = ('book', 'user', 'rating', 'comment', 'created_at')
+    search_fields = ('book', 'rating', 'comment')
+    list_filter = ('book', 'rating')
+    ordering = ('created_at',)
 
